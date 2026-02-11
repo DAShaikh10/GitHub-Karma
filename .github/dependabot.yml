@@ -1,0 +1,21 @@
+version: 2
+updates:
+  # Maintain dependencies for 'bun'
+  - package-ecosystem: bun
+    assignees: ["DAShaikh10"]
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps-dev)"
+
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: github-actions
+    assignees: ["DAShaikh10"]
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "ci(deps)"
+      prefix-development: "ci(deps-dev)"
