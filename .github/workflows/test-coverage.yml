@@ -40,8 +40,18 @@ jobs:
           set -euo pipefail
           mkdir -p assets/badges
 
-          total_lines=$(awk -F: '/^LF:/{sum+=$2} END{print sum+0}' coverage/lcov.info)
-          covered_lines=$(awk -F: '/^LH:/{sum+=$2} END{print sum+0}' coverage/lcov.info)
+          lcov_file="coverage/lcov.info"
+          if [ ! -f "$lcov_file" ]; then
+            lcov_file=$(find . -type f -name 'lcov.info' -path '*/coverage/*' | head -n 1 || true)
+          fi
+
+          if [ -z "${lcov_file:-}" ] || [ ! -f "$lcov_file" ]; then
+            echo "lcov file not found. Skipping coverage badge generation."
+            exit 0
+          fi
+
+          total_lines=$(awk -F: '/^LF:/{sum+=$2} END{print sum+0}' "$lcov_file")
+          covered_lines=$(awk -F: '/^LH:/{sum+=$2} END{print sum+0}' "$lcov_file")
 
           if [ "$total_lines" -eq 0 ]; then
             coverage_pct="0.00"
