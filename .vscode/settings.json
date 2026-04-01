@@ -1,3 +1,13 @@
 {
-  "editor.tabSize": 2
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.rulers": [119],
+  "eslint.useFlatConfig": true,
+  "js/ts.inlayHints.parameterNames.enabled": "all",
+  "prettier.printWidth": 119 // Prettier's default 80 limit seems too limiting!
 }
