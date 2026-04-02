@@ -15,8 +15,9 @@
 # misc
 .DS_Store
 
-# env files (can opt-in for committing if needed)
+# env files (Opt-in only the sample file, ignore the rest)
 .env*
+!.env.sample
 
 # typescript
 next-env.d.ts
