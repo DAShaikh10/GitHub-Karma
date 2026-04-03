@@ -205,7 +205,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
 
   return `
   <svg
-    aria-labelledby="titleId descId userId"
+    aria-labelledby="titleId descId"
     fill="${theme.bgColor}"
     height="${config.height}"
     role="img"
@@ -214,7 +214,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <title id="titleId">${data.title}</title>
+    <title id="titleId">${userText}</title>
     <desc id="descId">${data.description}</desc>
 
     <style>
@@ -246,7 +246,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
       x="0.5"
       y="0.5"/>
 
-    <text id="userId" class="h3" x="16" y="30">${userText}</text>
+    <text class="h3" x="16" y="30">${userText}</text>
 
     <text class="meta" x="16" y="52">Rank</text>
     <text class="h1" x="16" y="74">${rankLines[0]}</text>
