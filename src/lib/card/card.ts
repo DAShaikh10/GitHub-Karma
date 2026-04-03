@@ -57,6 +57,7 @@ export function contributorKarmaCard(stats: KarmaStats, config: Config, theme: T
       description:
         `Contributor karma card. Rank ${stats.rank.current.title}. ${stats.rank.current.description}. ` +
         `Progress ${stats.rank.progressToNextRank} percent. Score ${stats.karma}.`,
+      login: stats.login,
       nextRankScore: stats.rank.next?.minKarma ?? 0,
       rank: stats.rank.current.title,
       rankDescription: stats.rank.current.description,
@@ -76,6 +77,7 @@ export function creatorKarmaCard(stats: KarmaStats, config: Config, theme: Theme
       description:
         `Creator karma card. Rank ${stats.rank.current.title}. ${stats.rank.current.description}. ` +
         `Progress ${stats.rank.progressToNextRank} percent. Score ${stats.karma}.`,
+      login: stats.login,
       nextRankScore: stats.rank.next?.minKarma ?? 0,
       rank: stats.rank.current.title,
       rankDescription: stats.rank.current.description,
@@ -195,6 +197,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
   const finalDashOffset = circumference * (1 - normalizedProgress / 100);
   const rankLines = wrapToLines(data.rank, 14, 2);
   const display: "short" | "long" | undefined = data.currentRankScore >= 1000 ? "short" : undefined;
+  const userText: string = truncateWithEllipsis(`${data.login}'s ${data.title}`, 50);
   let scoreText = `${formatNumber(data.currentRankScore, display)}`;
   if (data.nextRankScore) {
     scoreText += ` / ${formatNumber(data.nextRankScore, display)}`;
@@ -202,7 +205,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
 
   return `
   <svg
-    aria-labelledby="titleId descId"
+    aria-labelledby="titleId descId userId"
     fill="${theme.bgColor}"
     height="${config.height}"
     role="img"
@@ -243,7 +246,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
       x="0.5"
       y="0.5"/>
 
-    <text class="h3" x="16" y="30">${data.title}</text>
+    <text id="userId" class="h3" x="16" y="30">${userText}</text>
 
     <text class="meta" x="16" y="52">Rank</text>
     <text class="h1" x="16" y="74">${rankLines[0]}</text>
