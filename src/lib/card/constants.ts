@@ -3,6 +3,10 @@ export const CONFIG = {
     height: 175,
     width: 388,
   },
+  contributor: {
+    height: 175,
+    width: 388,
+  },
   creator: {
     height: 175,
     width: 388,
