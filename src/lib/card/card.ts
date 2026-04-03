@@ -196,9 +196,9 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
   const normalizedProgress = Math.min(100, Math.max(0, data.rankProgress));
   const finalDashOffset = circumference * (1 - normalizedProgress / 100);
   const rankLines = wrapToLines(data.rank, 14, 2);
-  const display: "short" | "long" | undefined = data.currentRankScore >= 1000 ? "short" : undefined;
-  const userText: string = truncateWithEllipsis(`${data.login}'s ${data.title}`, 50);
-  let scoreText = `${formatNumber(data.currentRankScore, display)}`;
+  const display = data.currentRankScore >= 1000 ? "short" : undefined;
+  const userText = truncateWithEllipsis(`${data.login}'s ${data.title}`, 50);
+  let scoreText = formatNumber(data.currentRankScore, display);
   if (data.nextRankScore) {
     scoreText += ` / ${formatNumber(data.nextRankScore, display)}`;
   }
@@ -209,6 +209,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
     fill="${theme.bgColor}"
     height="${config.height}"
     role="img"
+    style="cursor:pointer"
     viewBox="0 0 ${config.width} ${config.height}"
     width="${config.width}"
     xmlns="http://www.w3.org/2000/svg"
@@ -225,12 +226,6 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
       .meta { fill:${theme.textColor};font:400 10px Ubuntu,Sans-Serif;opacity:.8; }
       .rim { stroke:${theme.iconColor};stroke-width:8;fill:none;opacity:.2; }
       .score { fill:${theme.textColor};font:700 12px Ubuntu,Sans-Serif;text-anchor:middle; }
-      .score-flip { cursor:pointer; }
-      .score-front, .score-back { transition:opacity .35s ease, transform .35s ease; transform-origin:${leftX}px ${leftY}px; }
-      .score-front { opacity:1; transform:scaleX(1); }
-      .score-back { opacity:0; transform:scaleX(0.15); }
-      .score-flip:hover .score-front, .score-flip:focus .score-front, .score-flip:focus-within .score-front { opacity:0; transform:scaleX(0.15); }
-      .score-flip:hover .score-back, .score-flip:focus .score-back, .score-flip:focus-within .score-back { opacity:1; transform:scaleX(1); }
       .split { stroke:${theme.borderColor};stroke-width:1; }
 
       @keyframes fillRing { to { stroke-dashoffset:${finalDashOffset.toFixed(3)} } }
@@ -259,11 +254,8 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
     <text class="meta" x="288" y="52">Karma</text>
     <circle class="rim" cx="${leftX}" cy="${leftY}" r="${radius}"/>
     <circle class="bar" cx="${leftX}" cy="${leftY}" r="${radius}"/>
-    <g class="score-flip" tabindex="0" role="img" aria-label="Score ${scoreText}. Hover to view rank logo.">
-      <circle cx="${leftX}" cy="${leftY}" r="22" fill="transparent" />
-      <text class="score score-front" x="${leftX}" y="${leftY + 4}">${scoreText}</text>
-      ${renderKarmaLogo(data.rankLogoSrc, "score-back", 58, leftX - 29, leftY - 29)}
-    </g>
+    <text class="score" x="${leftX}" y="${leftY + 4}">${scoreText}</text>
+    ${renderKarmaLogo(data.rankLogoSrc, "", 32, 346, 132)}
 
   </svg>`;
 }
