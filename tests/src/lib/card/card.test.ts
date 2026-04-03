@@ -74,7 +74,7 @@ describe("card rendering", () => {
     );
 
     expect(svg).toContain("1.2K / 5K");
-    expect(svg).toContain('style="cursor:pointer"');
+    expect(svg).toMatch(/style="[^"]*\bcursor\s*:\s*pointer\b[^"]*"/);
   });
 
   it("renders creator card metadata from karma stats", () => {
