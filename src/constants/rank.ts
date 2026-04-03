@@ -53,7 +53,7 @@ export const CONTRIBUTOR_RANKS = [
   {
     title: "New Contributor",
     description: "You've made your first contribution!",
-    logoSrc: "/logos/github-karma-rank-6-logo.png",
+    logoSrc: "/logos/github-karma-logo.png",
     minKarma: 300,
   },
   {

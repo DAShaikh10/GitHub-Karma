@@ -5,9 +5,13 @@ import { KARMA_CARD_CACHE_SECONDS, STALE_WHILE_REVALIDATION_SECONDS } from "@/co
 
 import type { NextRequest } from "next/server";
 
-type CreatorStats = {
+type ContributorStats = {
+  answers: number;
+  commits: number;
+  issues: number;
   login: string;
-  repositories: Array<{ stargazerCount: number; forkCount: number }>;
+  pullRequests: number;
+  reviews: number;
 };
 
 type ValidationResult =
@@ -25,7 +29,7 @@ type ValidationResult =
 
 const CARD_CONFIG = {
   clientError: { width: 388, height: 175 },
-  creator: { width: 388, height: 175 },
+  contributor: { width: 388, height: 175 },
   error: { width: 388, height: 175 },
 } as const;
 
@@ -41,20 +45,24 @@ const safeParseMock = mock(
   }),
 );
 
-const fetchGitHubCreatorDataMock = mock(
-  async (): Promise<CreatorStats | null> => ({
+const fetchGitHubContributorDataMock = mock(
+  async (): Promise<ContributorStats | null> => ({
     login: "alice",
-    repositories: [{ stargazerCount: 10, forkCount: 2 }],
+    commits: 120,
+    reviews: 8,
+    pullRequests: 12,
+    issues: 4,
+    answers: 7,
   }),
 );
 
-const fetchGitHubContributorDataMock = mock(async () => null);
+const fetchGitHubCreatorDataMock = mock(async () => null);
 
-const parseCreatorKarmaMock = mock(() => ({
+const parseContributorKarmaMock = mock(() => ({
   login: "alice",
   karma: 42,
   rank: {
-    current: { title: "Localhost Lurker", description: "", logoSrc: "", minKarma: 0 },
+    current: { title: "Code Lurker", description: "", logoSrc: "", minKarma: 0 },
     next: null,
     logoSrc: "",
     progressToNextRank: 100,
@@ -62,11 +70,11 @@ const parseCreatorKarmaMock = mock(() => ({
   },
 }));
 
-const parseContributorKarmaMock = mock(() => ({
+const parseCreatorKarmaMock = mock(() => ({
   login: "alice",
   karma: 42,
   rank: {
-    current: { title: "Code Lurker", description: "", logoSrc: "", minKarma: 0 },
+    current: { title: "Localhost Lurker", description: "", logoSrc: "", minKarma: 0 },
     next: null,
     logoSrc: "",
     progressToNextRank: 100,
@@ -92,11 +100,11 @@ class MockGitHubGraphQLError extends Error {
 }
 
 mock.module("@/lib/github", () => ({
-  fetchGitHubContributorData: fetchGitHubContributorDataMock,
   fetchGitHubCreatorData: fetchGitHubCreatorDataMock,
+  fetchGitHubContributorData: fetchGitHubContributorDataMock,
   GitHubGraphQLError: MockGitHubGraphQLError,
-  parseContributorKarma: parseContributorKarmaMock,
   parseCreatorKarma: parseCreatorKarmaMock,
+  parseContributorKarma: parseContributorKarmaMock,
   requestSchema: {
     safeParse: safeParseMock,
   },
@@ -113,7 +121,7 @@ mock.module("@/lib/card", () => ({
   notfoundErrorCard: notfoundErrorCardMock,
 }));
 
-const routeModulePromise = import("@/app/api/karma/creator/route");
+const routeModulePromise = import("@/app/api/karma/contributor/route");
 const originalNodeEnv = process.env.NODE_ENV;
 
 function setNodeEnv(value: NodeJS.ProcessEnv["NODE_ENV"]) {
@@ -129,7 +137,7 @@ function createRequest(url: string): NextRequest {
   return { nextUrl: new URL(url) } as NextRequest;
 }
 
-describe("GET /api/karma/creator", () => {
+describe("GET /api/karma/contributor", () => {
   beforeEach(() => {
     mock.clearAllMocks();
     setNodeEnv("test");
@@ -139,28 +147,32 @@ describe("GET /api/karma/creator", () => {
       data: { username: "alice", theme: "default" },
     });
 
-    fetchGitHubCreatorDataMock.mockResolvedValue({
+    fetchGitHubContributorDataMock.mockResolvedValue({
       login: "alice",
-      repositories: [{ stargazerCount: 10, forkCount: 2 }],
+      commits: 120,
+      reviews: 8,
+      pullRequests: 12,
+      issues: 4,
+      answers: 7,
     });
-    fetchGitHubContributorDataMock.mockResolvedValue(null);
+    fetchGitHubCreatorDataMock.mockResolvedValue(null);
 
-    parseCreatorKarmaMock.mockReturnValue({
+    parseContributorKarmaMock.mockReturnValue({
       login: "alice",
       karma: 42,
       rank: {
-        current: { title: "Localhost Lurker", description: "", logoSrc: "", minKarma: 0 },
+        current: { title: "Code Lurker", description: "", logoSrc: "", minKarma: 0 },
         next: null,
         logoSrc: "",
         progressToNextRank: 100,
         remainingToNextRank: 0,
       },
     });
-    parseContributorKarmaMock.mockReturnValue({
+    parseCreatorKarmaMock.mockReturnValue({
       login: "alice",
       karma: 42,
       rank: {
-        current: { title: "Code Lurker", description: "", logoSrc: "", minKarma: 0 },
+        current: { title: "Localhost Lurker", description: "", logoSrc: "", minKarma: 0 },
         next: null,
         logoSrc: "",
         progressToNextRank: 100,
@@ -190,7 +202,7 @@ describe("GET /api/karma/creator", () => {
     });
 
     const { GET } = await routeModulePromise;
-    const response = await GET(createRequest("https://example.com/api/karma/creator?username="));
+    const response = await GET(createRequest("https://example.com/api/karma/contributor?username="));
 
     expect(response.status).toBe(HTTP_STATUS.BAD_REQUEST);
     expect(response.headers.get(HEADER.CONTENT_TYPE)).toBe(CONTENT_TYPE.SVG);
@@ -200,25 +212,29 @@ describe("GET /api/karma/creator", () => {
       CARD_CONFIG.clientError,
       CARD_THEME.default,
     );
-    expect(fetchGitHubCreatorDataMock).not.toHaveBeenCalled();
+    expect(fetchGitHubContributorDataMock).not.toHaveBeenCalled();
   });
 
-  it("returns 200 with creator card and cache headers for valid users", async () => {
+  it("returns 200 with contributor card and cache headers for valid users", async () => {
     safeParseMock.mockReturnValue({
       success: true,
       data: { username: "danish", theme: "night" },
     });
 
-    fetchGitHubCreatorDataMock.mockResolvedValue({
+    fetchGitHubContributorDataMock.mockResolvedValue({
       login: "danish",
-      repositories: [{ stargazerCount: 1200, forkCount: 80 }],
+      commits: 1200,
+      reviews: 80,
+      pullRequests: 140,
+      issues: 25,
+      answers: 40,
     });
 
-    parseCreatorKarmaMock.mockReturnValue({
+    parseContributorKarmaMock.mockReturnValue({
       login: "danish",
-      karma: 12345,
+      karma: 4321,
       rank: {
-        current: { title: "Front-Page Creator", description: "", logoSrc: "", minKarma: 10_000 },
+        current: { title: "Core Maintainer", description: "", logoSrc: "", minKarma: 3500 },
         next: null,
         logoSrc: "",
         progressToNextRank: 100,
@@ -228,7 +244,9 @@ describe("GET /api/karma/creator", () => {
 
     const { GET } = await routeModulePromise;
     const response = await GET(
-      createRequest(`https://example.com/api/karma/creator?${QUERY_PARAM.USERNAME}=danish&${QUERY_PARAM.THEME}=night`),
+      createRequest(
+        `https://example.com/api/karma/contributor?${QUERY_PARAM.USERNAME}=danish&${QUERY_PARAM.THEME}=night`,
+      ),
     );
 
     expect(response.status).toBe(HTTP_STATUS.OK);
@@ -236,26 +254,30 @@ describe("GET /api/karma/creator", () => {
     expect(response.headers.get(HEADER.CACHE_CONTROL)).toBe(
       `public, s-maxage=${KARMA_CARD_CACHE_SECONDS}, stale-while-revalidate=${STALE_WHILE_REVALIDATION_SECONDS}`,
     );
-    expect(await response.text()).toBe("creator-card:danish");
+    expect(await response.text()).toBe("contributor-card:danish");
 
-    expect(fetchGitHubCreatorDataMock).toHaveBeenCalledWith("danish");
-    expect(parseCreatorKarmaMock).toHaveBeenCalledWith({
+    expect(fetchGitHubContributorDataMock).toHaveBeenCalledWith("danish");
+    expect(parseContributorKarmaMock).toHaveBeenCalledWith({
       login: "danish",
-      repositories: [{ stargazerCount: 1200, forkCount: 80 }],
+      commits: 1200,
+      reviews: 80,
+      pullRequests: 140,
+      issues: 25,
+      answers: 40,
     });
-    expect(creatorKarmaCardMock).toHaveBeenCalledWith(
+    expect(contributorKarmaCardMock).toHaveBeenCalledWith(
       {
         login: "danish",
-        karma: 12345,
+        karma: 4321,
         rank: {
-          current: { title: "Front-Page Creator", description: "", logoSrc: "", minKarma: 10_000 },
+          current: { title: "Core Maintainer", description: "", logoSrc: "", minKarma: 3500 },
           next: null,
           logoSrc: "",
           progressToNextRank: 100,
           remainingToNextRank: 0,
         },
       },
-      CARD_CONFIG.creator,
+      CARD_CONFIG.contributor,
       CARD_THEME.night,
     );
   });
@@ -266,10 +288,10 @@ describe("GET /api/karma/creator", () => {
       data: { username: "ghost", theme: "default" },
     });
 
-    fetchGitHubCreatorDataMock.mockResolvedValue(null);
+    fetchGitHubContributorDataMock.mockResolvedValue(null);
 
     const { GET } = await routeModulePromise;
-    const response = await GET(createRequest("https://example.com/api/karma/creator?username=ghost"));
+    const response = await GET(createRequest("https://example.com/api/karma/contributor?username=ghost"));
 
     expect(response.status).toBe(HTTP_STATUS.NOT_FOUND);
     expect(response.headers.get(HEADER.CONTENT_TYPE)).toBe(CONTENT_TYPE.SVG);
@@ -282,16 +304,16 @@ describe("GET /api/karma/creator", () => {
       CARD_CONFIG.clientError,
       CARD_THEME.default,
     );
-    expect(parseCreatorKarmaMock).not.toHaveBeenCalled();
+    expect(parseContributorKarmaMock).not.toHaveBeenCalled();
   });
 
   it("returns GitHub error card with long cache for 429", async () => {
-    fetchGitHubCreatorDataMock.mockRejectedValue(
+    fetchGitHubContributorDataMock.mockRejectedValue(
       new MockGitHubGraphQLError("Too Many Requests", HTTP_STATUS.TOO_MANY_REQUESTS),
     );
 
     const { GET } = await routeModulePromise;
-    const response = await GET(createRequest("https://example.com/api/karma/creator?username=alice"));
+    const response = await GET(createRequest("https://example.com/api/karma/contributor?username=alice"));
 
     expect(response.status).toBe(HTTP_STATUS.TOO_MANY_REQUESTS);
     expect(response.headers.get(HEADER.CONTENT_TYPE)).toBe(CONTENT_TYPE.SVG);
@@ -307,12 +329,12 @@ describe("GET /api/karma/creator", () => {
   });
 
   it("returns GitHub error card with short cache for non-429 GitHub errors", async () => {
-    fetchGitHubCreatorDataMock.mockRejectedValue(
+    fetchGitHubContributorDataMock.mockRejectedValue(
       new MockGitHubGraphQLError("Upstream failure", HTTP_STATUS.INTERNAL_SERVER_ERROR),
     );
 
     const { GET } = await routeModulePromise;
-    const response = await GET(createRequest("https://example.com/api/karma/creator?username=alice"));
+    const response = await GET(createRequest("https://example.com/api/karma/contributor?username=alice"));
 
     expect(response.status).toBe(HTTP_STATUS.INTERNAL_SERVER_ERROR);
     expect(response.headers.get(HEADER.CACHE_CONTROL)).toBe(
@@ -323,10 +345,10 @@ describe("GET /api/karma/creator", () => {
 
   it("returns generic internal-error card for thrown Error in production-like env", async () => {
     setNodeEnv("production");
-    fetchGitHubCreatorDataMock.mockRejectedValue(new Error("sensitive details"));
+    fetchGitHubContributorDataMock.mockRejectedValue(new Error("sensitive details"));
 
     const { GET } = await routeModulePromise;
-    const response = await GET(createRequest("https://example.com/api/karma/creator?username=alice"));
+    const response = await GET(createRequest("https://example.com/api/karma/contributor?username=alice"));
 
     expect(response.status).toBe(HTTP_STATUS.INTERNAL_SERVER_ERROR);
     expect(response.headers.get(HEADER.CONTENT_TYPE)).toBe(CONTENT_TYPE.SVG);
@@ -337,10 +359,10 @@ describe("GET /api/karma/creator", () => {
 
   it("returns actual error message in development for thrown Error", async () => {
     setNodeEnv("development");
-    fetchGitHubCreatorDataMock.mockRejectedValue(new Error("boom"));
+    fetchGitHubContributorDataMock.mockRejectedValue(new Error("boom"));
 
     const { GET } = await routeModulePromise;
-    const response = await GET(createRequest("https://example.com/api/karma/creator?username=alice"));
+    const response = await GET(createRequest("https://example.com/api/karma/contributor?username=alice"));
 
     expect(response.status).toBe(HTTP_STATUS.INTERNAL_SERVER_ERROR);
     expect(await response.text()).toBe("error-card:boom");
@@ -348,10 +370,10 @@ describe("GET /api/karma/creator", () => {
   });
 
   it("returns generic internal-error card when a non-Error value is thrown", async () => {
-    fetchGitHubCreatorDataMock.mockRejectedValue("panic");
+    fetchGitHubContributorDataMock.mockRejectedValue("panic");
 
     const { GET } = await routeModulePromise;
-    const response = await GET(createRequest("https://example.com/api/karma/creator?username=alice"));
+    const response = await GET(createRequest("https://example.com/api/karma/contributor?username=alice"));
 
     expect(response.status).toBe(HTTP_STATUS.INTERNAL_SERVER_ERROR);
     expect(await response.text()).toBe(

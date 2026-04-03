@@ -24,6 +24,7 @@ describe("card rendering", () => {
       {
         title: "Karma",
         description: "desc",
+        login: "alice",
         rank: "Code Lurker",
         rankDescription: "Getting started",
         rankLogoSrc: "/logos/github-karma-logo.png",
@@ -39,6 +40,7 @@ describe("card rendering", () => {
       {
         title: "Karma",
         description: "desc",
+        login: "alice",
         rank: "Code Lurker",
         rankDescription: "Getting started",
         rankLogoSrc: "/logos/github-karma-logo.png",
@@ -59,6 +61,7 @@ describe("card rendering", () => {
       {
         title: "Karma",
         description: "desc",
+        login: "alice",
         rank: "Top Contributor",
         rankDescription: "Long description",
         rankLogoSrc: "/logos/github-karma-logo.png",
@@ -71,6 +74,7 @@ describe("card rendering", () => {
     );
 
     expect(svg).toContain("1.2K / 5K");
+    expect(svg).toMatch(/style="[^"]*\bcursor\s*:\s*pointer\b[^"]*"/);
   });
 
   it("renders creator card metadata from karma stats", () => {
@@ -100,7 +104,7 @@ describe("card rendering", () => {
       THEME.default,
     );
 
-    expect(svg).toContain("GitHub Creator Karma");
+    expect(svg).toContain("alice's GitHub Creator Karma");
     expect(svg).toContain("Casual Poster");
     expect(svg).toContain("321 / 2.5K");
   });

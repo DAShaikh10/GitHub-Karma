@@ -1,2 +1,9 @@
 export { CONFIG, THEME } from "./constants";
-export { clientErrorCard, creatorKarmaCard, errorCard, gitHubErrorCard, notfoundErrorCard } from "./card";
+export {
+  clientErrorCard,
+  contributorKarmaCard,
+  creatorKarmaCard,
+  errorCard,
+  gitHubErrorCard,
+  notfoundErrorCard,
+} from "./card";
