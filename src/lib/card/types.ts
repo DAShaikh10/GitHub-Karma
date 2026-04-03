@@ -6,6 +6,7 @@ export type Config = {
 export type KarmaCardInput = {
   currentRankScore: number;
   description: string;
+  login: string;
   nextRankScore: number;
   rank: string;
   rankDescription: string;
