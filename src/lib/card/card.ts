@@ -50,6 +50,25 @@ export function clientErrorCard(message: string, config: Config, theme: Theme) {
   </svg>`;
 }
 
+export function contributorKarmaCard(stats: KarmaStats, config: Config, theme: Theme) {
+  return karmaCard(
+    {
+      currentRankScore: stats.karma,
+      description:
+        `Contributor karma card. Rank ${stats.rank.current.title}. ${stats.rank.current.description}. ` +
+        `Progress ${stats.rank.progressToNextRank} percent. Score ${stats.karma}.`,
+      nextRankScore: stats.rank.next?.minKarma ?? 0,
+      rank: stats.rank.current.title,
+      rankDescription: stats.rank.current.description,
+      rankLogoSrc: stats.rank.current.logoSrc,
+      rankProgress: stats.rank.progressToNextRank,
+      title: "GitHub Contributor Karma",
+    },
+    config,
+    theme,
+  );
+}
+
 export function creatorKarmaCard(stats: KarmaStats, config: Config, theme: Theme) {
   return karmaCard(
     {
