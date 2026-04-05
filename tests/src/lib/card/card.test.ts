@@ -155,8 +155,8 @@ describe("card rendering", () => {
   it("uses absolute image URLs when assetBaseUrl is provided", () => {
     const svg = errorCard("asset-url-test", CONFIG.error, THEME.default, ASSET_BASE_URL);
 
-    expect(svg).toContain('href="https://example.com/dotted-line-face.png"');
-    expect(svg).toContain('xlink:href="https://example.com/dotted-line-face.png"');
+    expect(svg).toContain('href="https://example.com/emojis/dotted-line-face.png"');
+    expect(svg).toContain('xlink:href="https://example.com/emojis/dotted-line-face.png"');
     expect(svg).toContain('href="https://example.com/logos/github-karma-err-logo.png"');
     expect(svg).toContain('xlink:href="https://example.com/logos/github-karma-err-logo.png"');
   });

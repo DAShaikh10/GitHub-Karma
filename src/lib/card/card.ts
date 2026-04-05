@@ -41,8 +41,8 @@ export function clientErrorCard(message: string, config: Config, theme: Theme, a
 
     <text class="title" x="16" y="30">Validation failed</text>
     <image
-      href="${resolveAssetUrl("/rolling-eyes-face.png", absoluteBaseUrl)}"
-      xlink:href="${resolveAssetUrl("/rolling-eyes-face.png", absoluteBaseUrl)}"
+      href="${resolveAssetUrl("/emojis/rolling-eyes-face.png", absoluteBaseUrl)}"
+      xlink:href="${resolveAssetUrl("/emojis/rolling-eyes-face.png", absoluteBaseUrl)}"
       preserveAspectRatio="xMidYMid meet"
       width="22"
       height="22"
@@ -134,8 +134,8 @@ export function errorCard(message: string, config: Config, theme: Theme, absolut
 
     <text class="title" x="14" y="30">Could not render GitHub Karma</text>
     <image
-      href="${resolveAssetUrl("/dotted-line-face.png", absoluteBaseUrl)}"
-      xlink:href="${resolveAssetUrl("/dotted-line-face.png", absoluteBaseUrl)}"
+      href="${resolveAssetUrl("/emojis/dotted-line-face.png", absoluteBaseUrl)}"
+      xlink:href="${resolveAssetUrl("/emojis/dotted-line-face.png", absoluteBaseUrl)}"
       preserveAspectRatio="xMidYMid meet"
       width="22"
       height="22"
@@ -185,8 +185,8 @@ export function notfoundErrorCard(message: string, config: Config, theme: Theme,
 
     <text class="title" x="14" y="30">User not found!</text>
     <image
-      href="${resolveAssetUrl("/sneezing-face.png", absoluteBaseUrl)}"
-      xlink:href="${resolveAssetUrl("/sneezing-face.png", absoluteBaseUrl)}"
+      href="${resolveAssetUrl("/emojis/sneezing-face.png", absoluteBaseUrl)}"
+      xlink:href="${resolveAssetUrl("/emojis/sneezing-face.png", absoluteBaseUrl)}"
       preserveAspectRatio="xMidYMid meet"
       width="22"
       height="22"
@@ -313,8 +313,8 @@ export function gitHubErrorCard(message: string, config: Config, theme: Theme, a
 
     <text class="title" x="16" y="30">GitHub GraphQL API Error</text>
     <image
-      href="${resolveAssetUrl("/dotted-line-face.png", absoluteBaseUrl)}"
-      xlink:href="${resolveAssetUrl("/dotted-line-face.png", absoluteBaseUrl)}"
+      href="${resolveAssetUrl("/emojis/dotted-line-face.png", absoluteBaseUrl)}"
+      xlink:href="${resolveAssetUrl("/emojis/dotted-line-face.png", absoluteBaseUrl)}"
       preserveAspectRatio="xMidYMid meet"
       width="22"
       height="22"
