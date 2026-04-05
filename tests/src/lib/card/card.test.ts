@@ -108,4 +108,40 @@ describe("card rendering", () => {
     expect(svg).toContain("Casual Poster");
     expect(svg).toContain("321 / 2.5K");
   });
+
+  it("renders ambient-gradient theme as an SVG linear gradient", () => {
+    const svg = errorCard("gradient test", CONFIG.error, THEME["ambient-gradient"]);
+
+    expect(svg).toContain("<linearGradient");
+    expect(svg).toContain('gradientTransform="rotate(35)"');
+    expect(svg).toContain('stop-color="#4158d0"');
+    expect(svg).toContain('stop-color="#c850c0"');
+    expect(svg).toContain('stop-color="#ffcc70"');
+    expect(svg).toContain('fill="url(#bg-gradient-');
+    expect(svg).not.toContain('fill="35,4158d0,c850c0,ffcc70"');
+  });
+
+  it("falls back to default border color when theme borderColor is missing", () => {
+    const fallbackBorderColor = THEME.default.borderColor ?? THEME.default.bgColor;
+    const svg = karmaCard(
+      {
+        title: "Karma",
+        description: "desc",
+        login: "alice",
+        rank: "Code Lurker",
+        rankDescription: "Getting started",
+        rankLogoSrc: "/logos/github-karma-logo.png",
+        rankProgress: 42,
+        currentRankScore: 321,
+        nextRankScore: 500,
+      },
+      CONFIG.creator,
+      THEME.algolia,
+    );
+
+    expect(svg).toContain(`stroke="${fallbackBorderColor}"`);
+    expect(svg).toContain(`stroke:${fallbackBorderColor};stroke-width:1;`);
+    expect(svg).not.toContain('stroke="undefined"');
+    expect(svg).not.toContain("stroke:undefined");
+  });
 });

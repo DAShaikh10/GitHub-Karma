@@ -17,7 +17,7 @@ export type KarmaCardInput = {
 
 export type Theme = {
   bgColor: string;
-  borderColor: string;
+  borderColor?: string;
   iconColor: string;
   textColor: string;
   titleColor: string;
