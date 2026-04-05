@@ -1,4 +1,4 @@
-import { Theme } from "./types";
+import type { Theme } from "./types";
 
 export const CONFIG = {
   error: {
@@ -25,13 +25,6 @@ export const CONFIG = {
   Credits: https://github.com/anuraghazra/github-readme-stats
 */
 export const THEME: Record<string, Theme> = {
-  default: {
-    borderColor: "#e4e2e2",
-    bgColor: "#fffefe",
-    iconColor: "#4c71f2",
-    textColor: "#434d58",
-    titleColor: "#2f80ed",
-  },
   algolia: {
     bgColor: "#050f2c",
     iconColor: "#2dde98",
@@ -124,17 +117,17 @@ export const THEME: Record<string, Theme> = {
     textColor: "#cdd6f4",
     titleColor: "#94e2d5",
   },
+  "chartreuse-dark": {
+    bgColor: "#000",
+    iconColor: "#00aeff",
+    textColor: "#fff",
+    titleColor: "#7fff00",
+  },
   "city-lights": {
     bgColor: "#1d252c",
     iconColor: "#4798ff",
     textColor: "#718ca1",
     titleColor: "#5d8cb3",
-  },
-  "chartreuse-dark": {
-    bgColor: "#000",
-    iconColor: "#00AEFF",
-    textColor: "#fff",
-    titleColor: "#7fff00",
   },
   cobalt: {
     bgColor: "#193549",
@@ -145,11 +138,11 @@ export const THEME: Record<string, Theme> = {
   cobalt2: {
     bgColor: "#193549",
     iconColor: "#fff",
-    textColor: "#0088ff",
+    textColor: "#08f",
     titleColor: "#ffc600",
   },
   codeSTACKr: {
-    bgColor: "#09131B",
+    bgColor: "#09131b",
     borderColor: "#0c1a25",
     iconColor: "#ffe400",
     textColor: "#fff",
@@ -173,6 +166,13 @@ export const THEME: Record<string, Theme> = {
     iconColor: "#bb8470",
     textColor: "#e1b2a2",
     titleColor: "#da7885",
+  },
+  default: {
+    bgColor: "#fffefe",
+    borderColor: "#e4e2e2",
+    iconColor: "#4c71f2",
+    textColor: "#434d58",
+    titleColor: "#2f80ed",
   },
   "discord-old-blurple": {
     bgColor: "#2c2f33",
@@ -237,7 +237,7 @@ export const THEME: Record<string, Theme> = {
   },
   highcontrast: {
     bgColor: "#000",
-    iconColor: "#00ffff",
+    iconColor: "#0ff",
     textColor: "#fff",
     titleColor: "#e7f216",
   },
@@ -249,7 +249,7 @@ export const THEME: Record<string, Theme> = {
     titleColor: "#5fabee",
   },
   jolly: {
-    bgColor: "#291B3E",
+    bgColor: "#291b3e",
     iconColor: "#a960ff",
     textColor: "#fff",
     titleColor: "#ff64da",
@@ -298,7 +298,7 @@ export const THEME: Record<string, Theme> = {
   },
   neon: {
     bgColor: "#000",
-    borderColor: "#ffffff",
+    borderColor: "#fff",
     iconColor: "#00ead3",
     textColor: "#ff449f",
     titleColor: "#00ead3",
@@ -310,7 +310,7 @@ export const THEME: Record<string, Theme> = {
     titleColor: "#c792ea",
   },
   "noctis-minimus": {
-    bgColor: "#31b2932",
+    bgColor: "#1b2932",
     iconColor: "#72b7c0",
     textColor: "#c5cdd3",
     titleColor: "#d3b692",
@@ -350,7 +350,7 @@ export const THEME: Record<string, Theme> = {
     bgColor: "#141439",
     iconColor: "#ff1aff",
     textColor: "#8080ff",
-    titleColor: "#ffcc00",
+    titleColor: "#fc0",
   },
   panda: {
     bgColor: "#31353a",
@@ -396,21 +396,21 @@ export const THEME: Record<string, Theme> = {
     titleColor: "#fad000",
   },
   "shadow-blue": {
-    bgColor: "#ffffff00",
+    bgColor: "#fff0",
     borderColor: "#004490",
     iconColor: "#004450",
     textColor: "#444",
     titleColor: "#00779a",
   },
   "shadow-green": {
-    bgColor: "#ffffff00",
+    bgColor: "#fff0",
     borderColor: "#003d00",
     iconColor: "#003d00",
     textColor: "#444",
     titleColor: "#007a00",
   },
   "shadow-red": {
-    bgColor: "#ffffff00",
+    bgColor: "#fff0",
     borderColor: "#4f0000",
     iconColor: "#4f0000",
     textColor: "#444",
@@ -453,15 +453,15 @@ export const THEME: Record<string, Theme> = {
     titleColor: "#70a5fd",
   },
   transparent: {
-    bgColor: "#ffffff00",
+    bgColor: "#fff0",
     iconColor: "#0579c3",
     textColor: "#417e87",
     titleColor: "#006aff",
   },
   "vision-friendly-dark": {
-    bgColor: "#000000",
+    bgColor: "#000",
     iconColor: "#785ef0",
-    textColor: "#ffffff",
+    textColor: "#fff",
     titleColor: "#ffb000",
   },
   vue: {
@@ -478,8 +478,8 @@ export const THEME: Record<string, Theme> = {
   },
   yeblu: {
     bgColor: "#002046",
-    iconColor: "#ffff00",
+    iconColor: "#ff0",
     textColor: "#fff",
-    titleColor: "#ffff00",
+    titleColor: "#ff0",
   },
 };

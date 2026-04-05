@@ -3,12 +3,13 @@ import type { KarmaStats } from "@/lib/github";
 import type { Config, KarmaCardInput, Theme } from "./types";
 
 export function clientErrorCard(message: string, config: Config, theme: Theme) {
+  const background = resolveBackgroundPaint(theme.bgColor);
   const { escapedText, textTspans } = parseText(message, 62, 4);
 
   return `
   <svg
     aria-labelledby="titleId descId"
-    fill="${theme.bgColor}"
+    fill="${background.fill}"
     height="${config.height}"
     role="img"
     viewBox="0 0 ${config.width} ${config.height}"
@@ -18,6 +19,7 @@ export function clientErrorCard(message: string, config: Config, theme: Theme) {
 
     <title id="titleId">GitHub Karma - Client Error</title>
     <desc id="descId">${escapedText}</desc>
+    ${background.defs}
 
     <style>
       rect { stroke-width: 2; }
@@ -26,7 +28,7 @@ export function clientErrorCard(message: string, config: Config, theme: Theme) {
     </style>
 
     <rect
-      fill="${theme.bgColor}"
+      fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
       stroke="${theme.borderColor}"
@@ -91,12 +93,13 @@ export function creatorKarmaCard(stats: KarmaStats, config: Config, theme: Theme
 }
 
 export function errorCard(message: string, config: Config, theme: Theme) {
+  const background = resolveBackgroundPaint(theme.bgColor);
   const { escapedText, textTspans } = parseText(message, 62, 4);
 
   return `
   <svg
     aria-labelledby="titleId descId"
-    fill="${theme.bgColor}"
+    fill="${background.fill}"
     height="${config.height}"
     role="img"
     viewBox="0 0 ${config.width} ${config.height}"
@@ -106,6 +109,7 @@ export function errorCard(message: string, config: Config, theme: Theme) {
 
     <title id="titleId">GitHub Karma - Internal Error</title>
     <desc id="descId">${escapedText}</desc>
+    ${background.defs}
 
     <style>
       rect { stroke-width: 2; }
@@ -114,7 +118,7 @@ export function errorCard(message: string, config: Config, theme: Theme) {
     </style>
 
     <rect
-      fill="${theme.bgColor}"
+      fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
       stroke="${theme.borderColor}"
@@ -139,12 +143,13 @@ export function errorCard(message: string, config: Config, theme: Theme) {
 }
 
 export function notfoundErrorCard(message: string, config: Config, theme: Theme) {
+  const background = resolveBackgroundPaint(theme.bgColor);
   const { escapedText, textTspans } = parseText(message, 62, 4);
 
   return `
   <svg
     aria-labelledby="titleId descId"
-    fill="${theme.bgColor}"
+    fill="${background.fill}"
     height="${config.height}"
     role="img"
     viewBox="0 0 ${config.width} ${config.height}"
@@ -154,6 +159,7 @@ export function notfoundErrorCard(message: string, config: Config, theme: Theme)
 
     <title id="titleId">GitHub Karma - 404</title>
     <desc id="descId">${escapedText}</desc>
+    ${background.defs}
 
     <style>
       rect { stroke-width: 2; }
@@ -162,7 +168,7 @@ export function notfoundErrorCard(message: string, config: Config, theme: Theme)
     </style>
 
     <rect
-      fill="${theme.bgColor}"
+      fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
       stroke="${theme.borderColor}"
@@ -187,6 +193,7 @@ export function notfoundErrorCard(message: string, config: Config, theme: Theme)
 }
 
 export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
+  const background = resolveBackgroundPaint(theme.bgColor);
   const leftX = 304;
   const leftY = 105;
   const radius = 42;
@@ -206,7 +213,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
   return `
   <svg
     aria-labelledby="titleId descId"
-    fill="${theme.bgColor}"
+    fill="${background.fill}"
     height="${config.height}"
     role="img"
     style="cursor:pointer"
@@ -217,6 +224,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
 
     <title id="titleId">${userText}</title>
     <desc id="descId">${data.description}</desc>
+    ${background.defs}
 
     <style>
       .bar { stroke:${theme.iconColor};stroke-width:8;fill:none;stroke-linecap:round;stroke-dasharray:${circumference.toFixed(3)};stroke-dashoffset:${circumference.toFixed(3)};transform:rotate(-90deg);transform-origin:${leftX}px ${leftY}px;animation:fillRing 1.2s ease-out forwards; }
@@ -233,7 +241,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
     </style>
 
     <rect
-      fill="${theme.bgColor}"
+      fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
       stroke="${theme.borderColor}"
@@ -261,12 +269,13 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
 }
 
 export function gitHubErrorCard(message: string, config: Config, theme: Theme) {
+  const background = resolveBackgroundPaint(theme.bgColor);
   const { escapedText, textTspans } = parseText(message, 62, 4);
 
   return `
   <svg
     aria-labelledby="titleId descId"
-    fill="${theme.bgColor}"
+    fill="${background.fill}"
     height="${config.height}"
     role="img"
     viewBox="0 0 ${config.width} ${config.height}"
@@ -276,6 +285,7 @@ export function gitHubErrorCard(message: string, config: Config, theme: Theme) {
 
     <title id="titleId">GitHub Karma - GitHub GraphQL API Error</title>
     <desc id="descId">${escapedText}</desc>
+    ${background.defs}
 
     <style>
       rect { stroke-width: 2; }
@@ -284,7 +294,7 @@ export function gitHubErrorCard(message: string, config: Config, theme: Theme) {
     </style>
 
     <rect
-      fill="${theme.bgColor}"
+      fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
       stroke="${theme.borderColor}"
@@ -306,6 +316,68 @@ export function gitHubErrorCard(message: string, config: Config, theme: Theme) {
     ${renderKarmaLogo("/logos/github-karma-err-logo.png", "", 34, 340, 128)}
 
   </svg>`;
+}
+
+function resolveBackgroundPaint(bgColor: string) {
+  const gradient = parseGradientBackground(bgColor);
+  if (!gradient) {
+    return { defs: "", fill: bgColor };
+  }
+
+  const gradientId = `bg-gradient-${stableHash(bgColor)}`;
+  const gradientStops = gradient.colors
+    .map((color, index) => {
+      const denominator = gradient.colors.length - 1;
+      const offset = denominator <= 0 ? "0%" : `${Math.round((index / denominator) * 100)}%`;
+
+      return `<stop offset="${offset}" stop-color="${color}"/>`;
+    })
+    .join("");
+
+  return {
+    defs: `<defs><linearGradient id="${gradientId}" gradientTransform="rotate(${gradient.angle})">${gradientStops}</linearGradient></defs>`,
+    fill: `url(#${gradientId})`,
+  };
+}
+
+function parseGradientBackground(bgColor: string) {
+  const parts = bgColor
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (parts.length < 3) {
+    return null;
+  }
+
+  const angle = Number(parts[0]);
+  if (!Number.isFinite(angle)) {
+    return null;
+  }
+
+  const colors = parts.slice(1).map((value) => normalizeHexColor(value));
+  if (colors.some((color) => color === null)) {
+    return null;
+  }
+
+  return { angle, colors: colors as string[] };
+}
+
+function normalizeHexColor(value: string) {
+  const normalized = value.toLowerCase();
+  const prefixed = normalized.startsWith("#") ? normalized : `#${normalized}`;
+
+  return /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/.test(prefixed) ? prefixed : null;
+}
+
+function stableHash(value: string) {
+  let hash = 0;
+
+  for (let i = 0; i < value.length; i += 1) {
+    hash = (hash * 31 + value.charCodeAt(i)) | 0;
+  }
+
+  return Math.abs(hash).toString(36);
 }
 
 /**
