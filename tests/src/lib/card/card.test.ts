@@ -3,16 +3,18 @@ import { describe, expect, it } from "bun:test";
 import { clientErrorCard, creatorKarmaCard, errorCard, karmaCard } from "@/lib/card/card";
 import { CONFIG, THEME } from "@/lib/card/constants";
 
+const ASSET_BASE_URL = "https://example.com";
+
 describe("card rendering", () => {
   it("escapes XML-reserved characters in error card text", () => {
-    const svg = errorCard("<foo & \"bar\" 'baz'>", CONFIG.error, THEME.default);
+    const svg = errorCard("<foo & \"bar\" 'baz'>", CONFIG.error, THEME.default, ASSET_BASE_URL);
 
     expect(svg).toContain("&lt;foo &amp; &quot;bar&quot; &apos;baz&apos;&gt;");
     expect(svg).not.toContain('<desc id="descId"><foo');
   });
 
   it("limits wrapped error text to max lines and adds ellipsis on overflow", () => {
-    const svg = clientErrorCard("verylongword ".repeat(50), CONFIG.clientError, THEME.default);
+    const svg = clientErrorCard("verylongword ".repeat(50), CONFIG.clientError, THEME.default, ASSET_BASE_URL);
     const tspanCount = svg.match(/<tspan /g)?.length ?? 0;
 
     expect(tspanCount).toBeLessThanOrEqual(4);
@@ -34,6 +36,7 @@ describe("card rendering", () => {
       },
       CONFIG.creator,
       THEME.default,
+      ASSET_BASE_URL,
     );
 
     const highProgress = karmaCard(
@@ -50,6 +53,7 @@ describe("card rendering", () => {
       },
       CONFIG.creator,
       THEME.default,
+      ASSET_BASE_URL,
     );
 
     expect(lowProgress).toContain("stroke-dashoffset:263.894");
@@ -71,6 +75,7 @@ describe("card rendering", () => {
       },
       CONFIG.creator,
       THEME.default,
+      ASSET_BASE_URL,
     );
 
     expect(svg).toContain("1.2K / 5K");
@@ -102,6 +107,7 @@ describe("card rendering", () => {
       },
       CONFIG.creator,
       THEME.default,
+      ASSET_BASE_URL,
     );
 
     expect(svg).toContain("alice's GitHub Creator Karma");
@@ -110,7 +116,7 @@ describe("card rendering", () => {
   });
 
   it("renders ambient-gradient theme as an SVG linear gradient", () => {
-    const svg = errorCard("gradient test", CONFIG.error, THEME["ambient-gradient"]);
+    const svg = errorCard("gradient test", CONFIG.error, THEME["ambient-gradient"], ASSET_BASE_URL);
 
     expect(svg).toContain("<linearGradient");
     expect(svg).toContain('gradientTransform="rotate(35)"');
@@ -137,11 +143,21 @@ describe("card rendering", () => {
       },
       CONFIG.creator,
       THEME.algolia,
+      ASSET_BASE_URL,
     );
 
     expect(svg).toContain(`stroke="${fallbackBorderColor}"`);
     expect(svg).toContain(`stroke:${fallbackBorderColor};stroke-width:1;`);
     expect(svg).not.toContain('stroke="undefined"');
     expect(svg).not.toContain("stroke:undefined");
+  });
+
+  it("uses absolute image URLs when assetBaseUrl is provided", () => {
+    const svg = errorCard("asset-url-test", CONFIG.error, THEME.default, ASSET_BASE_URL);
+
+    expect(svg).toContain('href="https://example.com/dotted-line-face.png"');
+    expect(svg).toContain('xlink:href="https://example.com/dotted-line-face.png"');
+    expect(svg).toContain('href="https://example.com/logos/github-karma-err-logo.png"');
+    expect(svg).toContain('xlink:href="https://example.com/logos/github-karma-err-logo.png"');
   });
 });

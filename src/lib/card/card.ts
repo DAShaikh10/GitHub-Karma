@@ -4,7 +4,7 @@ import type { KarmaStats } from "@/lib/github";
 
 import type { Config, KarmaCardInput, Theme } from "./types";
 
-export function clientErrorCard(message: string, config: Config, theme: Theme) {
+export function clientErrorCard(message: string, config: Config, theme: Theme, absoluteBaseUrl: string) {
   const background = resolveBackgroundPaint(theme.bgColor);
   const borderColor = resolveBorderColor(theme);
   const { escapedText, textTspans } = parseText(message, 62, 4);
@@ -41,8 +41,8 @@ export function clientErrorCard(message: string, config: Config, theme: Theme) {
 
     <text class="title" x="16" y="30">Validation failed</text>
     <image
-      href="/rolling-eyes-face.png"
-      xlink:href="/rolling-eyes-face.png"
+      href="${resolveAssetUrl("/rolling-eyes-face.png", absoluteBaseUrl)}"
+      xlink:href="${resolveAssetUrl("/rolling-eyes-face.png", absoluteBaseUrl)}"
       preserveAspectRatio="xMidYMid meet"
       width="22"
       height="22"
@@ -50,12 +50,12 @@ export function clientErrorCard(message: string, config: Config, theme: Theme) {
       y="12"/>
     <text class="text" x="16" y="54">${textTspans}</text>
 
-    ${renderKarmaLogo("/logos/github-karma-err-logo.png", "", 34, 340, 128)}
+    ${renderKarmaLogo("/logos/github-karma-err-logo.png", "", 34, 340, 128, absoluteBaseUrl)}
 
   </svg>`;
 }
 
-export function contributorKarmaCard(stats: KarmaStats, config: Config, theme: Theme) {
+export function contributorKarmaCard(stats: KarmaStats, config: Config, theme: Theme, absoluteBaseUrl: string) {
   return karmaCard(
     {
       currentRankScore: stats.karma,
@@ -72,10 +72,11 @@ export function contributorKarmaCard(stats: KarmaStats, config: Config, theme: T
     },
     config,
     theme,
+    absoluteBaseUrl,
   );
 }
 
-export function creatorKarmaCard(stats: KarmaStats, config: Config, theme: Theme) {
+export function creatorKarmaCard(stats: KarmaStats, config: Config, theme: Theme, absoluteBaseUrl: string) {
   return karmaCard(
     {
       currentRankScore: stats.karma,
@@ -92,10 +93,11 @@ export function creatorKarmaCard(stats: KarmaStats, config: Config, theme: Theme
     },
     config,
     theme,
+    absoluteBaseUrl,
   );
 }
 
-export function errorCard(message: string, config: Config, theme: Theme) {
+export function errorCard(message: string, config: Config, theme: Theme, absoluteBaseUrl: string) {
   const background = resolveBackgroundPaint(theme.bgColor);
   const borderColor = resolveBorderColor(theme);
   const { escapedText, textTspans } = parseText(message, 62, 4);
@@ -132,8 +134,8 @@ export function errorCard(message: string, config: Config, theme: Theme) {
 
     <text class="title" x="14" y="30">Could not render GitHub Karma</text>
     <image
-      href="/dotted-line-face.png"
-      xlink:href="/dotted-line-face.png"
+      href="${resolveAssetUrl("/dotted-line-face.png", absoluteBaseUrl)}"
+      xlink:href="${resolveAssetUrl("/dotted-line-face.png", absoluteBaseUrl)}"
       preserveAspectRatio="xMidYMid meet"
       width="22"
       height="22"
@@ -141,12 +143,12 @@ export function errorCard(message: string, config: Config, theme: Theme) {
       y="14"/>
     <text class="text" x="14" y="54">${textTspans}</text>
 
-    ${renderKarmaLogo("/logos/github-karma-err-logo.png", "", 34, 340, 128)}
+    ${renderKarmaLogo("/logos/github-karma-err-logo.png", "", 34, 340, 128, absoluteBaseUrl)}
 
   </svg>`;
 }
 
-export function notfoundErrorCard(message: string, config: Config, theme: Theme) {
+export function notfoundErrorCard(message: string, config: Config, theme: Theme, absoluteBaseUrl: string) {
   const background = resolveBackgroundPaint(theme.bgColor);
   const borderColor = resolveBorderColor(theme);
   const { escapedText, textTspans } = parseText(message, 62, 4);
@@ -183,8 +185,8 @@ export function notfoundErrorCard(message: string, config: Config, theme: Theme)
 
     <text class="title" x="14" y="30">User not found!</text>
     <image
-      href="/sneezing-face.png"
-      xlink:href="/sneezing-face.png"
+      href="${resolveAssetUrl("/sneezing-face.png", absoluteBaseUrl)}"
+      xlink:href="${resolveAssetUrl("/sneezing-face.png", absoluteBaseUrl)}"
       preserveAspectRatio="xMidYMid meet"
       width="22"
       height="22"
@@ -192,12 +194,12 @@ export function notfoundErrorCard(message: string, config: Config, theme: Theme)
       y="14"/>
     <text class="text" x="14" y="54">${textTspans}</text>
 
-    ${renderKarmaLogo("/logos/github-karma-404-logo.png", "", 34, 340, 128)}
+    ${renderKarmaLogo("/logos/github-karma-404-logo.png", "", 34, 340, 128, absoluteBaseUrl)}
 
   </svg>`;
 }
 
-export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
+export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme, absoluteBaseUrl: string) {
   const background = resolveBackgroundPaint(theme.bgColor);
   const borderColor = resolveBorderColor(theme);
   const leftX = 304;
@@ -269,12 +271,12 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
     <circle class="rim" cx="${leftX}" cy="${leftY}" r="${radius}"/>
     <circle class="bar" cx="${leftX}" cy="${leftY}" r="${radius}"/>
     <text class="score" x="${leftX}" y="${leftY + 4}">${scoreText}</text>
-    ${renderKarmaLogo(data.rankLogoSrc, "", 32, 346, 132)}
+    ${renderKarmaLogo(data.rankLogoSrc, "", 32, 346, 132, absoluteBaseUrl)}
 
   </svg>`;
 }
 
-export function gitHubErrorCard(message: string, config: Config, theme: Theme) {
+export function gitHubErrorCard(message: string, config: Config, theme: Theme, absoluteBaseUrl: string) {
   const background = resolveBackgroundPaint(theme.bgColor);
   const borderColor = resolveBorderColor(theme);
   const { escapedText, textTspans } = parseText(message, 62, 4);
@@ -311,8 +313,8 @@ export function gitHubErrorCard(message: string, config: Config, theme: Theme) {
 
     <text class="title" x="16" y="30">GitHub GraphQL API Error</text>
     <image
-      href="/dotted-line-face.png"
-      xlink:href="/dotted-line-face.png"
+      href="${resolveAssetUrl("/dotted-line-face.png", absoluteBaseUrl)}"
+      xlink:href="${resolveAssetUrl("/dotted-line-face.png", absoluteBaseUrl)}"
       preserveAspectRatio="xMidYMid meet"
       width="22"
       height="22"
@@ -320,7 +322,7 @@ export function gitHubErrorCard(message: string, config: Config, theme: Theme) {
       y="12"/>
     <text class="text" x="16" y="54">${textTspans}</text>
 
-    ${renderKarmaLogo("/logos/github-karma-err-logo.png", "", 34, 340, 128)}
+    ${renderKarmaLogo("/logos/github-karma-err-logo.png", "", 34, 340, 128, absoluteBaseUrl)}
 
   </svg>`;
 }
@@ -422,12 +424,25 @@ function parseText(text: string, maxCharsPerLine: number, maxLines: number) {
   return { escapedText, textTspans };
 }
 
-function renderKarmaLogo(src: string, customClass = "", size = 24, x = 360, y = 136) {
+function resolveAssetUrl(src: string, assetBaseUrl?: string) {
+  if (!assetBaseUrl || /^(?:[a-z]+:)?\/\//i.test(src) || src.startsWith("data:")) {
+    return src;
+  }
+
+  const normalizedBase = assetBaseUrl.replace(/\/$/, "");
+  const normalizedPath = src.startsWith("/") ? src : `/${src}`;
+
+  return `${normalizedBase}${normalizedPath}`;
+}
+
+function renderKarmaLogo(src: string, customClass = "", size = 24, x = 360, y = 136, assetBaseUrl?: string) {
+  const resolvedSrc = resolveAssetUrl(src, assetBaseUrl);
+
   return `
   <image
     class="${customClass}"
-    href="${src}"
-    xlink:href="${src}"
+    href="${resolvedSrc}"
+    xlink:href="${resolvedSrc}"
     preserveAspectRatio="xMidYMid meet"
     width="${size}"
     height="${size}"
