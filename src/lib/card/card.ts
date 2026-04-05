@@ -1,9 +1,12 @@
+import { THEME } from "./constants";
+
 import type { KarmaStats } from "@/lib/github";
 
 import type { Config, KarmaCardInput, Theme } from "./types";
 
 export function clientErrorCard(message: string, config: Config, theme: Theme) {
   const background = resolveBackgroundPaint(theme.bgColor);
+  const borderColor = resolveBorderColor(theme);
   const { escapedText, textTspans } = parseText(message, 62, 4);
 
   return `
@@ -31,7 +34,7 @@ export function clientErrorCard(message: string, config: Config, theme: Theme) {
       fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
-      stroke="${theme.borderColor}"
+      stroke="${borderColor}"
       width="${config.width - 2}"
       x="0.5"
       y="0.5"/>
@@ -94,6 +97,7 @@ export function creatorKarmaCard(stats: KarmaStats, config: Config, theme: Theme
 
 export function errorCard(message: string, config: Config, theme: Theme) {
   const background = resolveBackgroundPaint(theme.bgColor);
+  const borderColor = resolveBorderColor(theme);
   const { escapedText, textTspans } = parseText(message, 62, 4);
 
   return `
@@ -121,7 +125,7 @@ export function errorCard(message: string, config: Config, theme: Theme) {
       fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
-      stroke="${theme.borderColor}"
+      stroke="${borderColor}"
       width="${config.width - 2}"
       x="0.5"
       y="0.5"/>
@@ -144,6 +148,7 @@ export function errorCard(message: string, config: Config, theme: Theme) {
 
 export function notfoundErrorCard(message: string, config: Config, theme: Theme) {
   const background = resolveBackgroundPaint(theme.bgColor);
+  const borderColor = resolveBorderColor(theme);
   const { escapedText, textTspans } = parseText(message, 62, 4);
 
   return `
@@ -171,7 +176,7 @@ export function notfoundErrorCard(message: string, config: Config, theme: Theme)
       fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
-      stroke="${theme.borderColor}"
+      stroke="${borderColor}"
       width="${config.width - 2}"
       x="0.5"
       y="0.5"/>
@@ -194,6 +199,7 @@ export function notfoundErrorCard(message: string, config: Config, theme: Theme)
 
 export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
   const background = resolveBackgroundPaint(theme.bgColor);
+  const borderColor = resolveBorderColor(theme);
   const leftX = 304;
   const leftY = 105;
   const radius = 42;
@@ -234,7 +240,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
       .meta { fill:${theme.textColor};font:400 10px Ubuntu,Sans-Serif;opacity:.8; }
       .rim { stroke:${theme.iconColor};stroke-width:8;fill:none;opacity:.2; }
       .score { fill:${theme.textColor};font:700 12px Ubuntu,Sans-Serif;text-anchor:middle; }
-      .split { stroke:${theme.borderColor};stroke-width:1; }
+      .split { stroke:${borderColor};stroke-width:1; }
 
       @keyframes fillRing { to { stroke-dashoffset:${finalDashOffset.toFixed(3)} } }
       @media (prefers-reduced-motion: reduce) {.bar{animation:none;stroke-dashoffset:${finalDashOffset.toFixed(3)} } }
@@ -244,7 +250,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
       fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
-      stroke="${theme.borderColor}"
+      stroke="${borderColor}"
       width="${config.width - 2}"
       x="0.5"
       y="0.5"/>
@@ -270,6 +276,7 @@ export function karmaCard(data: KarmaCardInput, config: Config, theme: Theme) {
 
 export function gitHubErrorCard(message: string, config: Config, theme: Theme) {
   const background = resolveBackgroundPaint(theme.bgColor);
+  const borderColor = resolveBorderColor(theme);
   const { escapedText, textTspans } = parseText(message, 62, 4);
 
   return `
@@ -297,7 +304,7 @@ export function gitHubErrorCard(message: string, config: Config, theme: Theme) {
       fill="${background.fill}"
       height="${config.height - 2}"
       rx="8.5"
-      stroke="${theme.borderColor}"
+      stroke="${borderColor}"
       width="${config.width - 2}"
       x="0.5"
       y="0.5"/>
@@ -397,6 +404,8 @@ const escapeXml = (value: string) =>
 
 const formatNumber = (value: number, display: "short" | "long" | undefined) =>
   new Intl.NumberFormat("en", { notation: "compact", compactDisplay: display }).format(value);
+
+const resolveBorderColor = (theme: Theme) => theme.borderColor ?? THEME.default.borderColor ?? THEME.default.bgColor;
 
 function parseText(text: string, maxCharsPerLine: number, maxLines: number) {
   const escapedText = escapeXml(text);

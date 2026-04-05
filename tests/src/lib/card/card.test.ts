@@ -120,4 +120,28 @@ describe("card rendering", () => {
     expect(svg).toContain('fill="url(#bg-gradient-');
     expect(svg).not.toContain('fill="35,4158d0,c850c0,ffcc70"');
   });
+
+  it("falls back to default border color when theme borderColor is missing", () => {
+    const fallbackBorderColor = THEME.default.borderColor ?? THEME.default.bgColor;
+    const svg = karmaCard(
+      {
+        title: "Karma",
+        description: "desc",
+        login: "alice",
+        rank: "Code Lurker",
+        rankDescription: "Getting started",
+        rankLogoSrc: "/logos/github-karma-logo.png",
+        rankProgress: 42,
+        currentRankScore: 321,
+        nextRankScore: 500,
+      },
+      CONFIG.creator,
+      THEME.algolia,
+    );
+
+    expect(svg).toContain(`stroke="${fallbackBorderColor}"`);
+    expect(svg).toContain(`stroke:${fallbackBorderColor};stroke-width:1;`);
+    expect(svg).not.toContain('stroke="undefined"');
+    expect(svg).not.toContain("stroke:undefined");
+  });
 });
