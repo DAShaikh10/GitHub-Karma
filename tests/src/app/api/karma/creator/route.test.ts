@@ -115,6 +115,7 @@ mock.module("@/lib/card", () => ({
 
 const routeModulePromise = import("@/app/api/karma/creator/route");
 const originalNodeEnv = process.env.NODE_ENV;
+const ASSET_BASE_URL = "https://example.com";
 
 function setNodeEnv(value: NodeJS.ProcessEnv["NODE_ENV"]) {
   Object.defineProperty(process.env, "NODE_ENV", {
@@ -199,6 +200,7 @@ describe("GET /api/karma/creator", () => {
       "Username cannot be empty",
       CARD_CONFIG.clientError,
       CARD_THEME.default,
+      ASSET_BASE_URL,
     );
     expect(fetchGitHubCreatorDataMock).not.toHaveBeenCalled();
   });
@@ -257,6 +259,7 @@ describe("GET /api/karma/creator", () => {
       },
       CARD_CONFIG.creator,
       CARD_THEME.night,
+      ASSET_BASE_URL,
     );
   });
 
@@ -281,6 +284,7 @@ describe("GET /api/karma/creator", () => {
       'User "ghost" not found',
       CARD_CONFIG.clientError,
       CARD_THEME.default,
+      ASSET_BASE_URL,
     );
     expect(parseCreatorKarmaMock).not.toHaveBeenCalled();
   });
@@ -303,6 +307,7 @@ describe("GET /api/karma/creator", () => {
       "GitHub API Error: Too Many Requests",
       CARD_CONFIG.error,
       CARD_THEME.default,
+      ASSET_BASE_URL,
     );
   });
 
@@ -319,6 +324,18 @@ describe("GET /api/karma/creator", () => {
       `public, s-maxage=${STALE_WHILE_REVALIDATION_SECONDS}, stale-while-revalidate=${STALE_WHILE_REVALIDATION_SECONDS}`,
     );
     expect(await response.text()).toBe("github-error:GitHub API Error: Upstream failure");
+  });
+
+  it("passes request origin into card render options", async () => {
+    const { GET } = await routeModulePromise;
+    await GET(createRequest("https://example.com/api/karma/creator?username=alice"));
+
+    expect(creatorKarmaCardMock).toHaveBeenCalledWith(
+      expect.anything(),
+      CARD_CONFIG.creator,
+      CARD_THEME.default,
+      ASSET_BASE_URL,
+    );
   });
 
   it("returns generic internal-error card for thrown Error in production-like env", async () => {
@@ -344,7 +361,7 @@ describe("GET /api/karma/creator", () => {
 
     expect(response.status).toBe(HTTP_STATUS.INTERNAL_SERVER_ERROR);
     expect(await response.text()).toBe("error-card:boom");
-    expect(errorCardMock).toHaveBeenCalledWith("boom", CARD_CONFIG.error, CARD_THEME.default);
+    expect(errorCardMock).toHaveBeenCalledWith("boom", CARD_CONFIG.error, CARD_THEME.default, ASSET_BASE_URL);
   });
 
   it("returns generic internal-error card when a non-Error value is thrown", async () => {
