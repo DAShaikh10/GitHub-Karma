@@ -2,15 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { CONTENT_TYPE, HEADER, HTTP_STATUS, QUERY_PARAM } from "@/constants/api";
 import { KARMA_CARD_CACHE_SECONDS, STALE_WHILE_REVALIDATION_SECONDS } from "@/constants/env";
-import {
-  CONFIG,
-  clientErrorCard,
-  creatorKarmaCard,
-  errorCard,
-  gitHubErrorCard,
-  notfoundErrorCard,
-  THEME,
-} from "@/lib/card";
+import { CONFIG, THEME } from "@/lib/card";
+import { clientErrorCard, creatorKarmaCard, errorCard, gitHubErrorCard, notfoundErrorCard } from "@/lib/card/render";
 import { fetchGitHubCreatorData, GitHubGraphQLError, parseCreatorKarma, requestSchema } from "@/lib/github";
 
 // NOTE: Document the endpoint here as well for easier reference to the query parameters.

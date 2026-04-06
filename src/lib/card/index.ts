@@ -1,9 +1,5 @@
+/* NOTE: Do not export anything from here if it will lead to `uri.ts` exports.
+   Instead use `render.ts`.
+*/
+
 export { CONFIG, THEME } from "./constants";
-export {
-  clientErrorCard,
-  contributorKarmaCard,
-  creatorKarmaCard,
-  errorCard,
-  gitHubErrorCard,
-  notfoundErrorCard,
-} from "./card";

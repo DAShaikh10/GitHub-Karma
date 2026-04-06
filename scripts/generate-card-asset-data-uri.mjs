@@ -24,7 +24,7 @@ for (const group of assetGroups) {
   }
 }
 
-const outputFilePath = join(repoRoot, "src", "lib", "card", "asset-data-uri.ts");
+const outputFilePath = join(repoRoot, "src", "lib", "card", "uri.ts");
 const output = [
   "// AUTO-GENERATED FILE. DO NOT EDIT DIRECTLY.",
   "// Run: bun run generate:asset-data-uri",

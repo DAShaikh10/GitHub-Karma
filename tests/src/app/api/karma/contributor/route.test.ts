@@ -113,6 +113,9 @@ mock.module("@/lib/github", () => ({
 mock.module("@/lib/card", () => ({
   CONFIG: CARD_CONFIG,
   THEME: CARD_THEME,
+}));
+
+mock.module("@/lib/card/render", () => ({
   clientErrorCard: clientErrorCardMock,
   contributorKarmaCard: contributorKarmaCardMock,
   creatorKarmaCard: creatorKarmaCardMock,

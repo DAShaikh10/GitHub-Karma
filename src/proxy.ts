@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { CONTENT_TYPE, HTTP_STATUS } from "@/constants/api";
 import { GITHUB_PERSONAL_ACCESS_TOKEN } from "@/constants/env";
-import { CONFIG, errorCard, THEME } from "@/lib/card";
+import { CONFIG, THEME } from "@/lib/card";
+import { errorCard } from "@/lib/card/render";
 
 export default function proxy(request: NextRequest) {
   // Sanity check for GitHub Personal Access Token.
