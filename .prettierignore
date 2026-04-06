@@ -4,3 +4,4 @@ build
 node_modules
 pnpm-lock.yaml
 bun.lock
+src/lib/card/uri.ts
