@@ -71,7 +71,7 @@ jobs:
             color="orange"
           fi
 
-          if ! curl -fsSL "https://img.shields.io/badge/coverage-${coverage_pct}%25-${color}?style=flat-square" -o assets/badges/coverage.svg; then
+          if ! curl -fsSL "https://img.shields.io/badge/coverage-${coverage_pct}%25-${color}?style=flat" -o assets/badges/coverage.svg; then
             echo "Could not reach shields.io. Keeping existing badge."
             exit 0
           fi
