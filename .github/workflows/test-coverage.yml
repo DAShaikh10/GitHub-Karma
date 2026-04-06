@@ -35,7 +35,7 @@ jobs:
         run: bun run test:coverage
 
       - name: Generate coverage badge
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         run: |
           set -euo pipefail
           mkdir -p assets/badges
@@ -77,10 +77,10 @@ jobs:
           fi
 
       - name: Commit coverage badge
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
         run: |
           set -euo pipefail
-          if git diff --quiet -- assets/badges/coverage.svg; then
+          if [[ -z "$(git status --porcelain -- assets/badges/coverage.svg)" ]]; then
             echo "Coverage badge unchanged."
             exit 0
           fi

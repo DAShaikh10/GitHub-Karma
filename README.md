@@ -18,8 +18,8 @@
   <a href="https://github.com/DAShaikh10/GitHub-Karma/graphs/contributors?color=pink">
     <img alt="Contributors" src="https://img.shields.io/github/contributors/DAShaikh10/GitHub-Karma?color=pink" />
   </a>
-  <a href="https://coveragerobot.com">
-    <img alt="Coverage" src="https://api.coveragerobot.com/v1/graph/github/DAShaikh10/GitHub-Karma/badge.svg" />
+  <a href="https://github.com/DAShaikh10/GitHub-Karma/actions/workflows/test-coverage.yml">
+    <img alt="Coverage" src="https://raw.githubusercontent.com/DAShaikh10/GitHub-Karma/main/assets/badges/coverage.svg" />
   </a>
   <a href="https://github.com/DAShaikh10/GitHub-Karma/issues">
     <img alt="Issues" src="https://img.shields.io/github/issues/DAShaikh10/GitHub-Karma?color=white" />
