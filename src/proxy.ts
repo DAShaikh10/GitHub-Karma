@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { CONTENT_TYPE, HTTP_STATUS } from "@/constants/api";
 import { GITHUB_PERSONAL_ACCESS_TOKEN } from "@/constants/env";
-import { CONFIG, errorCard, THEME } from "@/lib/card";
+import { CONFIG, THEME } from "@/lib/card";
+import { errorCard } from "@/lib/card/render";
 
 export default function proxy(request: NextRequest) {
   // Sanity check for GitHub Personal Access Token.
@@ -16,7 +17,7 @@ export default function proxy(request: NextRequest) {
       process.env.NODE_ENV === "development"
         ? "'GITHUB_PERSONAL_ACCESS_TOKEN' is missing in .env file"
         : "Internal server error. Please try again later. Create a GitHub issue if the problem persists.";
-    return new NextResponse(errorCard(error, CONFIG.error, theme, request.nextUrl.origin), {
+    return new NextResponse(errorCard(error, CONFIG.error, theme), {
       status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
       headers: {
         "Content-Type": CONTENT_TYPE.SVG,

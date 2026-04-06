@@ -113,6 +113,9 @@ mock.module("@/lib/github", () => ({
 mock.module("@/lib/card", () => ({
   CONFIG: CARD_CONFIG,
   THEME: CARD_THEME,
+}));
+
+mock.module("@/lib/card/render", () => ({
   clientErrorCard: clientErrorCardMock,
   contributorKarmaCard: contributorKarmaCardMock,
   creatorKarmaCard: creatorKarmaCardMock,
@@ -123,7 +126,6 @@ mock.module("@/lib/card", () => ({
 
 const routeModulePromise = import("@/app/api/karma/contributor/route");
 const originalNodeEnv = process.env.NODE_ENV;
-const ASSET_BASE_URL = "https://example.com";
 
 function setNodeEnv(value: NodeJS.ProcessEnv["NODE_ENV"]) {
   Object.defineProperty(process.env, "NODE_ENV", {
@@ -212,7 +214,6 @@ describe("GET /api/karma/contributor", () => {
       "Username cannot be empty",
       CARD_CONFIG.clientError,
       CARD_THEME.default,
-      ASSET_BASE_URL,
     );
     expect(fetchGitHubContributorDataMock).not.toHaveBeenCalled();
   });
@@ -281,7 +282,6 @@ describe("GET /api/karma/contributor", () => {
       },
       CARD_CONFIG.contributor,
       CARD_THEME.night,
-      ASSET_BASE_URL,
     );
   });
 
@@ -306,7 +306,6 @@ describe("GET /api/karma/contributor", () => {
       'User "ghost" not found',
       CARD_CONFIG.clientError,
       CARD_THEME.default,
-      ASSET_BASE_URL,
     );
     expect(parseContributorKarmaMock).not.toHaveBeenCalled();
   });
@@ -329,7 +328,6 @@ describe("GET /api/karma/contributor", () => {
       "GitHub API Error: Too Many Requests",
       CARD_CONFIG.error,
       CARD_THEME.default,
-      ASSET_BASE_URL,
     );
   });
 
@@ -348,16 +346,24 @@ describe("GET /api/karma/contributor", () => {
     expect(await response.text()).toBe("github-error:GitHub API Error: Upstream failure");
   });
 
-  it("passes request origin into card render options", async () => {
+  it("calls card renderer with selected theme", async () => {
     const { GET } = await routeModulePromise;
     await GET(createRequest("https://example.com/api/karma/contributor?username=alice"));
 
-    expect(contributorKarmaCardMock).toHaveBeenCalledWith(
-      expect.anything(),
-      CARD_CONFIG.contributor,
-      CARD_THEME.default,
-      ASSET_BASE_URL,
-    );
+    expect(safeParseMock).toHaveBeenCalledWith({ username: "alice", theme: undefined });
+    expect(parseContributorKarmaMock).toHaveBeenCalledWith({
+      login: "alice",
+      commits: 120,
+      reviews: 8,
+      pullRequests: 12,
+      issues: 4,
+      answers: 7,
+    });
+
+    const parsedProfile = parseContributorKarmaMock.mock.results[0]?.value;
+    expect(parsedProfile).toBeDefined();
+    expect(contributorKarmaCardMock).toHaveBeenCalledTimes(1);
+    expect(contributorKarmaCardMock).toHaveBeenCalledWith(parsedProfile, CARD_CONFIG.contributor, CARD_THEME.default);
   });
 
   it("returns generic internal-error card for thrown Error in production-like env", async () => {
@@ -383,7 +389,7 @@ describe("GET /api/karma/contributor", () => {
 
     expect(response.status).toBe(HTTP_STATUS.INTERNAL_SERVER_ERROR);
     expect(await response.text()).toBe("error-card:boom");
-    expect(errorCardMock).toHaveBeenCalledWith("boom", CARD_CONFIG.error, CARD_THEME.default, ASSET_BASE_URL);
+    expect(errorCardMock).toHaveBeenCalledWith("boom", CARD_CONFIG.error, CARD_THEME.default);
   });
 
   it("returns generic internal-error card when a non-Error value is thrown", async () => {

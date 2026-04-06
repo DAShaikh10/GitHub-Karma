@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "bun --bun next dev",
     "build": "bun --bun next build",
-    "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "generate:asset-data-uri": "bun scripts/generate-card-asset-data-uri.mjs",
+    "lint": "eslint",
     "prepare": "husky",
     "start": "bun --bun next start",
     "test": "bun test",
