@@ -91,11 +91,11 @@
 
 # Important Notices
 
-> [!IMPORTANT] This project uses caching headers to reduce rate-limit pressure. Data is not real-time by design.
-> Currently, the Karma cards are cached for **2** hours before regeneration.
+> [!IMPORTANT]
+> This project uses caching headers to reduce rate-limit pressure. Data is not real-time by design. Currently, the Karma cards are cached for **2** hours before regeneration.
 
-> [!NOTE] By default, data visibility depends on the permissions of your GitHub token. If you want private-repo-aware
-> metrics, deploy your own instance with a properly scoped token.
+> [!NOTE]
+> By default, data visibility depends on the permissions of your GitHub token. If you want private-repo-aware metrics, deploy your own instance with a properly scoped token.
 
 # GitHub Creator Karma Card
 
