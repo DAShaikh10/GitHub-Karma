@@ -16,7 +16,7 @@ export default function proxy(request: NextRequest) {
       process.env.NODE_ENV === "development"
         ? "'GITHUB_PERSONAL_ACCESS_TOKEN' is missing in .env file"
         : "Internal server error. Please try again later. Create a GitHub issue if the problem persists.";
-    return new NextResponse(errorCard(error, CONFIG.error, theme, request.nextUrl.origin), {
+    return new NextResponse(errorCard(error, CONFIG.error, theme), {
       status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
       headers: {
         "Content-Type": CONTENT_TYPE.SVG,
