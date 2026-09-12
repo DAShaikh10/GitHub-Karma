@@ -38,23 +38,19 @@ const CARD_THEME = {
   night: { id: "night-theme" },
 } as const;
 
-const safeParseMock = mock(
-  (): ValidationResult => ({
-    success: true,
-    data: { username: "alice", theme: "default" },
-  }),
-);
+const safeParseMock = mock((): ValidationResult => ({
+  success: true,
+  data: { username: "alice", theme: "default" },
+}));
 
-const fetchGitHubContributorDataMock = mock(
-  async (): Promise<ContributorStats | null> => ({
-    login: "alice",
-    commits: 120,
-    reviews: 8,
-    pullRequests: 12,
-    issues: 4,
-    answers: 7,
-  }),
-);
+const fetchGitHubContributorDataMock = mock(async (): Promise<ContributorStats | null> => ({
+  login: "alice",
+  commits: 120,
+  reviews: 8,
+  pullRequests: 12,
+  issues: 4,
+  answers: 7,
+}));
 
 const fetchGitHubCreatorDataMock = mock(async () => null);
 
